@@ -29,7 +29,7 @@ class TestCipherEngine(unittest.TestCase):
 
     def test_invalid_key_type(self):
         with self.assertRaises(TypeError):
-            encrypt("test", "5")
+           encrypt("test", "5")  # type: ignore
 
     def test_invalid_key_value(self):
         with self.assertRaises(ValueError):
