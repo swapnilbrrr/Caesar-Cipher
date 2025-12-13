@@ -6,7 +6,9 @@ Compares text frequencies against standard English letter frequencies
 to assist in cryptanalysis.
 """
 
-from utils import normalize_text
+def normalize_text(text: str) -> str:
+    """Return text converted to lowercase for uniform analysis."""
+    return text.lower()
 
 # Standard English letter frequencies (source: Wikipedia/common sources)
 ENGLISH_FREQUENCIES = {
