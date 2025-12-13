@@ -18,6 +18,7 @@ Provides:
 
 from cipher_engine import encrypt, decrypt
 from analyzer import calculate_frequencies, score_text_by_frequency
+from breaker import break_cipher
 from utils import normalize_text
 
 
@@ -26,7 +27,8 @@ def show_menu():
     print("\n=== CAESAR CIPHER TOOL ===")
     print("1) Encrypt text")
     print("2) Decrypt text")
-    print("3) Frequency analysis")
+    print("3) Break cipher")
+    print("4) Frequency analysis")
     print("0) Exit")
     print("===========================")
 
@@ -56,8 +58,17 @@ def run():
             result = decrypt(text, key)
             print(f"\nDecrypted Output:\n{result}")
 
-        # Frequency Analysis
+        # Break Cipher
         elif choice == "3":
+            text = input("Enter ciphertext to break: ")
+            result = break_cipher(text)
+            print("\n--- Cipher Broken ---")
+            print(f"Best Key Found: {result['key']}")
+            print(f"Recovered Plaintext: {result['plaintext']}")
+            print(f"Confidence Score: {result['score']:.2f} (lower is better)")
+
+        # Frequency Analysis
+        elif choice == "4":
             text = input("Enter text to analyze: ")
             cleaned = normalize_text(text)
             freqs = calculate_frequencies(cleaned)
