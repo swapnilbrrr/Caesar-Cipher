@@ -14,8 +14,11 @@ def encrypt(text: str, key: int) -> str:
     """Encrypt text using adaptive Caesar cipher with a numeric key."""
     if not isinstance(key, int):
         raise TypeError("Key must be an integer")
-    if key < 0 or key >= TOTAL:
-        raise ValueError(f"Key must be between 0 and {TOTAL-1}")
+    if key < 0:
+        raise ValueError(f"Key must be a positive integer")
+    
+    # Allow keys larger than TOTAL, wrap them around
+    key = key % TOTAL
 
     result = ""
     for char in text:
@@ -33,8 +36,11 @@ def decrypt(text: str, key: int) -> str:
     """Decrypt text encrypted with adaptive Caesar cipher using the same key."""
     if not isinstance(key, int):
         raise TypeError("Key must be an integer")
-    if key < 0 or key >= TOTAL:
-        raise ValueError(f"Key must be between 0 and {TOTAL-1}")
+    if key < 0:
+        raise ValueError(f"Key must be a positive integer")
+
+    # Allow keys larger than TOTAL, wrap them around
+    key = key % TOTAL
 
     result = ""
     for char in text:
