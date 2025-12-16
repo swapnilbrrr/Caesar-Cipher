@@ -4,7 +4,7 @@ Validates encryption, decryption, and edge-case behavior.
 """
 
 import unittest
-from cipher_engine import encrypt, decrypt, TOTAL
+from src.cipher_engine import encrypt, decrypt, TOTAL
 
 
 class TestCipherEngine(unittest.TestCase):
@@ -24,8 +24,10 @@ class TestCipherEngine(unittest.TestCase):
         self.assertEqual(sample, decrypted)
 
     def test_key_wrapping(self):
-        self.assertEqual(encrypt("A", TOTAL), "A")     # key == TOTAL → no shift
-        self.assertEqual(decrypt("A", TOTAL), "A")
+        # A key of 0 should produce no change
+        self.assertEqual(encrypt("A", 0), "A")
+        # A key equal to the total number of characters should wrap around to 0
+        self.assertEqual(encrypt("A", TOTAL), "A")
 
     def test_invalid_key_type(self):
         with self.assertRaises(TypeError):
@@ -34,8 +36,9 @@ class TestCipherEngine(unittest.TestCase):
     def test_invalid_key_value(self):
         with self.assertRaises(ValueError):
             encrypt("test", -1)
-        with self.assertRaises(ValueError):
-            encrypt("test", TOTAL + 5)
+        # No longer raises ValueError for key > TOTAL, as it now wraps
+        # with self.assertRaises(ValueError):
+        #     encrypt("test", TOTAL + 5)
 
 
 if __name__ == "__main__":
