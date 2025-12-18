@@ -20,120 +20,89 @@ This makes the project relevant for **SOC**, **GRC**, **cybersecurity engineerin
 
 ---
 
-## ✨ Features
+## ✨ Core Features
 
-### 🔒 **1. Advanced Cipher Engine**
+### 🔒 **1. Adaptive Cipher Engine (`cipher_engine.py`)**
 
-* Works on **all printable ASCII** (letters, digits, symbols)
-* Category-aware:
+- **Full ASCII Support:** Encrypts and decrypts all printable ASCII characters (32-126), including uppercase letters, lowercase letters, digits, and symbols.
+- **Uniform Shifting:** Implements a continuous shift across the entire character range, simulating common obfuscation techniques.
+- **Robust Validation:** Includes strict key validation and error handling to ensure predictable behavior.
 
-  * Uppercase letters shift within A–Z
-  * Lowercase letters shift within a–z
-  * Digits shift within 0–9
-  * Symbols shift within their ASCII range
-* Optional custom shift profiles
-* Clean error handling and input validation
+### 🕵️ **2. Automated Cryptanalysis (`breaker.py`)**
 
----
+- **Brute-Force Attack:** Automatically attempts all 95 possible shifts to find the original plaintext.
+- **Frequency-Scoring Algorithm:** Scores each potential decryption against standard English letter frequencies to identify the most probable candidate.
+- **Hands-Off Recovery:** Automatically identifies and displays the most likely key, plaintext, and confidence score.
 
-### 🕵️ **2. Cryptanalysis (Breaker Module)**
+### 📊 **3. Frequency Analyzer (`analyzer.py`)**
 
-* Brute-force attempts on all 95 ASCII shifts
-* English-scoring algorithm:
+- **Statistical Analysis:** Computes the character distribution of any given text.
+- **English Language Comparison:** Measures how closely a text's letter frequency matches that of standard English, producing a "deviation score."
+- **Demonstrates Weakness:** Clearly illustrates the statistical weaknesses inherent in simple substitution ciphers.
 
-  * Letter frequency deviation
-  * Dictionary-word probability
-  * Penalties for gibberish
-* Automatically extracts the most likely plaintext
-* Useful for SOC analysts decoding suspicious payloads
+### 🛠️ **4. Interactive CLI (`main.py`)**
 
----
-
-### 📊 **3. Frequency Analyzer**
-
-* Computes distribution of characters
-* Compares to typical English frequencies
-* Helps demonstrate why Caesar Cipher is weak
-* Structure ready for future visualization (matplotlib)
-
----
-
-### 🛠️ **4. CLI Tool (main.py)**
-
-Command-line interface with clean subcommands:
-
-* `encrypt`
-* `decrypt`
-* `break`
-* `analyze`
-
-Supports plain text via arguments or piped input.
+- **Menu-Driven Interface:** A simple, interactive command-line menu to access all major functions:
+  - Encrypt text with a key.
+  - Decrypt text with a key.
+  - Automatically break a cipher.
+  - Perform frequency analysis on text.
 
 ---
 
 ## 📁 Project Structure
 
+The project is organized into clear, single-responsibility modules.
+
 ```
-caesar_cipher/
+/
 ├── src/
-│   ├── main.py               # CLI entry point
-│   ├── cipher_engine.py      # Adaptive Caesar engine
-│   ├── breaker.py            # Cryptanalysis module
-│   ├── analyzer.py           # Frequency analysis
-│   └── utils.py              # Shared helpers
+│   ├── main.py             # Interactive CLI entry point
+│   ├── cipher_engine.py    # Core encryption/decryption engine
+│   ├── breaker.py          # Automated cryptanalysis module
+│   └── analyzer.py         # Frequency analysis tools
 │
 ├── tests/
-│   └── test_cipher.py        # Unit tests
+│   └── test_cipher.py      # Unit tests for the cipher engine
 │
 ├── docs/
-│   └── design_notes.md       # Architecture notes, formulas, decisions
+│   └── design_notes.md     # In-depth architecture and design decisions
 │
-├── requirements.txt          # Dependencies
-├── README.md                 # Project documentation
-├── .gitignore                # Standard Python ignores
-└── LICENSE                   # MIT License
+├── requirements.txt        # Project dependencies
+└── README.md               # You are here!
 ```
 
 ---
 
-## ▶️ Installation
+## ▶️ Installation & Usage
+
+### **Installation**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/caesar_cipher.git
+# 1. Clone the repository
+git clone https://github.com/swapnilbrrr/Caesar-Cipher.git
 cd caesar_cipher
+
+# 2. Set up a virtual environment
 python -m venv venv
-source venv/bin/activate      # Linux/Mac
-venv\Scripts\activate         # Windows
+# On Windows:
+venv\Scripts\activate
+# On Linux/Mac:
+# source venv/bin/activate
+
+# 3. Install dependencies
 pip install -r requirements.txt
 ```
 
----
+### **Running the Tool**
 
-## ▶️ Usage
-
-### 🔐 **Encrypt**
+Execute the main script from the project's root directory to launch the interactive menu.
 
 ```bash
-python src/main.py encrypt "hello world" --shift 4
+python src/main.py
 ```
 
-### 🔓 **Decrypt**
-
-```bash
-python src/main.py decrypt "lipps${svph" --shift 4
-```
-
-### 🕵️ **Break Encryption (No Key)**
-
-```bash
-python src/main.py break "lipps${svph"
-```
-
-### 📊 **Analyze Frequency**
-
-```bash
-python src/main.py analyze "lipps${svph"
-```
+From the menu, you can choose to **Encrypt**, **Decrypt**, **Break**, or **Analyze** text by following the on-screen prompts.
 
 ---
 
@@ -150,14 +119,17 @@ Recruiters see this and think:
 
 ---
 
-## 🏗️ Future Enhancements (Optional Roadmap)
+## 🏗️ Project Roadmap & Future Enhancements
 
-* Add visualization charts (matplotlib)
-* Add web UI (Flask)
-* Add Atbash & ROT13 layers
-* Add API endpoints
-* Add Docker support
-* Add encryption profiles JSON
+This project is designed to be extended. The following features are on the roadmap:
+
+- [x] **Integrate Cipher Breaker:** The `breaker.py` module is now fully integrated into the `main.py` CLI.
+- [ ] **Advanced CLI:** Upgrade `main.py` to use `argparse` for powerful command-line subcommands (e.g., `python main.py break <ciphertext>`).
+- [ ] **Dictionary-Based Scoring:** Improve the `analyzer` by adding a dictionary lookup to score candidates based on the presence of real English words.
+- [ ] **Data Visualization:** Integrate `matplotlib` to create visual charts of frequency distributions.
+- [ ] **Expanded Testing:** Add comprehensive unit tests for the `analyzer` and `breaker` modules.
+- [ ] **Category-Based Shifting:** Enhance the `cipher_engine` to support independent shifting for different character types (A-Z, a-z, 0-9), more closely mirroring the classic Caesar cipher.
+- [ ] **Web Interface:** Build a simple Flask or FastAPI wrapper to demonstrate the toolkit in a web browser.
 
 ---
 
